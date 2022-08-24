@@ -1,17 +1,3 @@
-// # возвращает информацию о пользователе (email и имя)
-// GET /users/me
-
-// # обновляет информацию о пользователе (email и имя)
-// PATCH /users/me
-
-// # создаёт пользователя с переданными в теле
-// # email, password и name
-// POST /signup
-
-// # проверяет переданные в теле почту и пароль
-// # и возвращает JWT
-// POST /signin
-
 const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
