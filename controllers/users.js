@@ -5,6 +5,7 @@ const User = require('../models/user');
 
 const ConflictErr = require('../errors/ConflictErr');
 const NotFoundError = require('../errors/Not-found-err');
+const BadRequestErr = require('../errors/BadRequestErr');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -27,14 +28,13 @@ module.exports.updateUser = (req, res, next) => {
     .then((user) => {
       res.status(ok).send(user);
     })
-    .catch((err) => console.log(err))
-    // .catch((err) => {
-    //   if (err.name === 'ValidationError') {
-    //     next(new BadRequestErr('Переданы некорректные данные'));
-    //     return;
-    //   }
-    //   next(err);
-    // });
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        next(new BadRequestErr('Переданы некорректные данные'));
+        return;
+      }
+      next(err);
+    });
 };
 
 module.exports.createUser = (req, res, next) => {
