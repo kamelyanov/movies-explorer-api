@@ -18,17 +18,15 @@ router.post(
       year: Joi.number().integer(),
       description: Joi.string().min(2).max(30).required(),
       image: Joi.string().uri({ scheme: ['http', 'https'] }).required(),
-      trailer: Joi.string().uri({ scheme: ['http', 'https'] }).required(),
-      nameRU: Joi.string().min(2).max(30).pattern(new RegExp('/[А-Яа-яЁё\d\-]/gi/')).required(),
-      nameEN: Joi.string().min(2).max(30).pattern(new RegExp('/[A-Za-z\d\-]/gi/')).required(),
+      trailerLink: Joi.string().uri({ scheme: ['http', 'https'] }).required(),
       thumbnail: Joi.string().uri({ scheme: ['http', 'https'] }).required(),
-      movieId: Joi.string().required(),
-      name: Joi.string().min(2).max(30).required(),
-      link: Joi.string().uri({ scheme: ['http', 'https'] }).required(),
+      movieId: Joi.number().integer(),
+      nameRU: Joi.string().pattern(new RegExp('[\wа-я\sё]{3,30}')).required(),
+      nameEN: Joi.string().pattern(new RegExp('^[a-zA-Z0-9-_]{3,30}$')).required(),
     }).unknown(true),
   }),
   createMovie,
 );
-router.delete('/', deleteMovie);
+router.delete('/:id', deleteMovie);
 
 module.exports = router;

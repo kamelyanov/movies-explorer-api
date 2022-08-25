@@ -17,6 +17,10 @@ const movieSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  description: {
+    type: String,
+    required: true,
+  },
   image: {
     type: String,
     required: true,
@@ -50,7 +54,7 @@ const movieSchema = new mongoose.Schema({
     ref: 'user',
   },
   movieId: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Number,
     required: true,
   },
   nameRU: {
@@ -67,7 +71,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator(text) {
-        return /[А-Яа-яЁё\d\-]/.test(text);
+        return /[A-Za-z\d\-]/.test(text);
       },
     },
   },

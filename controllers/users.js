@@ -41,7 +41,6 @@ module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
 
   return User.findUserByCredentials(email, password)
-    //.then((user) => res.send(user)) //этот обаботчик работает, следующий нет
     .then((user) => {
       const token = jwt.sign(
         { _id: user._id },
