@@ -3,7 +3,9 @@ const { celebrate, Joi } = require('celebrate');
 const auth = require('../middlewares/auth');
 const { login, createUser } = require('../controllers/users');
 const userRouter = require('./users');
-const movieRouter = require ('./movies');
+const movieRouter = require('./movies');
+
+const NotFoundError = require('../errors/Not-found-err');
 
 router.get('/', (req, res) => {
   res.send('Hello World');

@@ -7,17 +7,40 @@ const {
   created,
 } = require('../constants/statuses');
 
-
 module.exports.getMovies = (req, res, next) => {
-   Movie.find({})
-     .then((movies) => res.send(movies))
-     .catch(next);
+  Movie.find({})
+    .then((movies) => res.send(movies))
+    .catch(next);
 };
 
 module.exports.createMovie = (req, res, next) => {
-  const { country, director, duration, year, description, image, trailerLink, thumbnail, movieId, nameRU, nameEN } = req.body;
+  const {
+    country,
+    director,
+    duration,
+    year,
+    description,
+    image, trailerLink,
+    thumbnail,
+    movieId,
+    nameRU,
+    nameEN,
+  } = req.body;
 
-  Movie.create({ country, director, duration, year, description, image, trailerLink, thumbnail, movieId, owner: req.user._id, nameRU, nameEN })
+  Movie.create({
+    country,
+    director,
+    duration,
+    year,
+    description,
+    image,
+    trailerLink,
+    thumbnail,
+    movieId,
+    owner: req.user._id,
+    nameRU,
+    nameEN,
+  })
     .then((movie) => res.status(created).send(movie))
     .catch((err) => {
       if (err.name === 'ValidationError') {

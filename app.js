@@ -3,11 +3,11 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
+const rateLimit = require('express-rate-limit');
+const helmet = require('helmet');
 const handleErrors = require('./errors/handleErrors');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const router = require('./routes');
-const rateLimit = require('express-rate-limit');
-const helmet = require('helmet');
 
 const app = express();
 const limiter = rateLimit({
@@ -19,7 +19,6 @@ const limiter = rateLimit({
 
 const {
   PORT = 3000,
-  NODE_ENV,
   MONGODB_ADDRESS = 'mongodb://localhost:27017/bitfilmsdb',
 } = process.env;
 

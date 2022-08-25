@@ -62,7 +62,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator(text) {
-        return /[А-Яа-яЁё\d\-]/.test(text);
+        return /([а-яА-ЯёЁ0-9_.-]){3,30}/.test(text);
       },
     },
   },
@@ -71,7 +71,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator(text) {
-        return /[A-Za-z\d\-]/.test(text);
+        return /([A-Za-z0-9_.-]){3,30}/.test(text);
       },
     },
   },
