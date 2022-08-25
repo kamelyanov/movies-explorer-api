@@ -4,10 +4,12 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
 const ConflictErr = require('../errors/ConflictErr');
+const NotFoundError = require('../errors/Not-found-err');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
 const {
+  ok,
   created,
 } = require('../constants/statuses');
 
@@ -15,6 +17,24 @@ module.exports.getUserMe = (req, res, next) => {
   User.findById(req.user._id)
     .then((user) => res.send(user))
     .catch(next);
+};
+
+module.exports.updateUser = (req, res, next) => {
+  const { name, email } = req.body;
+
+  User.findByIdAndUpdate(req.user._id, { name, email }, { new: true, runValidators: true })
+    .orFail(new NotFoundError('Пользователь не найден'))
+    .then((user) => {
+      res.status(ok).send(user);
+    })
+    .catch((err) => console.log(err))
+    // .catch((err) => {
+    //   if (err.name === 'ValidationError') {
+    //     next(new BadRequestErr('Переданы некорректные данные'));
+    //     return;
+    //   }
+    //   next(err);
+    // });
 };
 
 module.exports.createUser = (req, res, next) => {
