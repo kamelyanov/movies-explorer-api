@@ -1,32 +1,20 @@
+require('dotenv').config();
 const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const NotFoundError = require('../errors/not-found-err');
-const BadRequestErr = require('../errors/BadRequestErr');
 const ConflictErr = require('../errors/ConflictErr');
+
+const { NODE_ENV, JWT_SECRET } = process.env;
+
+const {
+  created,
+} = require('../constants/statuses');
 
 module.exports.getUserMe = (req, res, next) => {
   User.findById(req.user._id)
     .then((user) => res.send(user))
     .catch(next);
-};
-
-module.exports.updateUser = (req, res, next) => {
-  const { name, about } = req.body;
-
-  User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
-    .orFail(new NotFoundError('Пользователь не найден'))
-    .then((user) => {
-      res.status(ok).send(user);
-    })
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        next(new BadRequestErr('Переданы некорректные данные'));
-        return;
-      }
-      next(err);
-    });
 };
 
 module.exports.createUser = (req, res, next) => {
@@ -53,6 +41,7 @@ module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
 
   return User.findUserByCredentials(email, password)
+    //.then((user) => res.send(user)) //этот обаботчик работает, следующий нет
     .then((user) => {
       const token = jwt.sign(
         { _id: user._id },

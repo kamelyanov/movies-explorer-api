@@ -1,10 +1,11 @@
 const router = require('express').Router();
+const { celebrate, Joi } = require('celebrate');
 
 const {
   getMovies,
   createMovie,
-
-} = require('../controllers/users');
+  deleteMovie,
+} = require('../controllers/movies');
 
 router.get('/', getMovies);
 router.post(
@@ -14,7 +15,7 @@ router.post(
       country: Joi.string().min(2).max(30).required(),
       director: Joi.string().min(2).max(30).required(),
       duration: Joi.string().min(2).max(30).required(),
-      year: Joi.number().integer().pattern(new RegExp('/^\d{4}$/')),
+      year: Joi.number().integer(),
       description: Joi.string().min(2).max(30).required(),
       image: Joi.string().uri({ scheme: ['http', 'https'] }).required(),
       trailer: Joi.string().uri({ scheme: ['http', 'https'] }).required(),

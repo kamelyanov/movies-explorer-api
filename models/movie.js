@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const userSchema = new mongoose.Schema({
+const movieSchema = new mongoose.Schema({
   country: {
     type: String,
     required: true,
@@ -58,7 +58,7 @@ const userSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator(text) {
-        return /[А-Яа-яЁё\d\-]/gi/.test(text);
+        return /[А-Яа-яЁё\d\-]/.test(text);
       },
     },
   },
@@ -67,10 +67,10 @@ const userSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator(text) {
-        return /[A-Za-z\d\-]/gi/.test(text);
+        return /[А-Яа-яЁё\d\-]/.test(text);
       },
     },
   },
 });
 
-module.exports = mongoose.model('user', userSchema);
+module.exports = mongoose.model('movie', movieSchema);
