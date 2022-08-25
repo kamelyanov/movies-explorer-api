@@ -5,7 +5,7 @@ const { login, createUser } = require('../controllers/users');
 const userRouter = require('./users');
 const movieRouter = require('./movies');
 
-const NotFoundError = require('../errors/Not-found-err');
+const NotFoundError = require('../errors/not-found-err');
 
 router.get('/', (req, res) => {
   res.send('Hello World');
