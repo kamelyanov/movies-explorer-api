@@ -17,4 +17,4 @@
 51.250.93.171
 
 ## Домен сервера  
-api.movies.kamelianov.nomoredomains.sbs
+https://api.movies.kamelianov.nomoredomains.sbs

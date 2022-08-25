@@ -23,6 +23,8 @@ const {
 } = process.env;
 
 const allowedCors = [
+  'https://movies.kamelianov.nomoredomains.sbs',
+  'http://movies.kamelianov.nomoredomains.sbs',
   'http://localhost:3000',
 ];
 
