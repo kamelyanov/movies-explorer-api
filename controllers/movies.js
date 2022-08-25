@@ -1,6 +1,7 @@
 const Movie = require('../models/movie');
 const NotFoundError = require('../errors/Not-found-err');
 const BadRequestErr = require('../errors/BadRequestErr');
+const ForbiddenErr = require('../errors/ForbiddenErr');
 
 const {
   ok,
@@ -54,7 +55,11 @@ module.exports.createMovie = (req, res, next) => {
 module.exports.deleteMovie = (req, res, next) => {
   Movie.findById(req.params.id)
     .orFail(new NotFoundError('Карточка не найдена'))
-    .then(() => {
+    .then((movie) => {
+      if (`${movie.owner}` !== req.user._id) {
+        next(new ForbiddenErr('Нельзя удалять карточки других пользователей'));
+        return;
+      }
       Movie.findByIdAndRemove(req.params.id)
         .then(() => {
           res.status(ok).send({ message: 'Карточка удалена' });
