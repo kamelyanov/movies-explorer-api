@@ -3,23 +3,18 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
-const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const handleErrors = require('./errors/handleErrors');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const router = require('./routes');
+const limiter = require('./middlewares/reteLimiter');
 
 const app = express();
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
-  standardHeaders: true,
-  legacyHeaders: false,
-});
+const MONGODB_ADDRESS_DEVELOP = require('./utils/mongodbAdress');
 
 const {
   PORT = 3000,
-  MONGODB_ADDRESS = 'mongodb://localhost:27017/bitfilmsdb',
+  MONGODB_ADDRESS = MONGODB_ADDRESS_DEVELOP,
 } = process.env;
 
 const allowedCors = [

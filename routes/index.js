@@ -7,9 +7,9 @@ const movieRouter = require('./movies');
 
 const NotFoundError = require('../errors/not-found-err');
 
-router.get('/', (req, res) => {
-  res.send('Hello World');
-});
+const {
+  PAGE_NOT_FOUND,
+} = require('../constants/constants');
 
 router.post(
   '/signin',
@@ -38,7 +38,7 @@ router.use(auth);
 router.use('/users', userRouter);
 router.use('/movies', movieRouter);
 router.use('*', (req, res, next) => {
-  next(new NotFoundError('Страница не найдена'));
+  next(new NotFoundError(PAGE_NOT_FOUND));
 });
 
 module.exports = router;

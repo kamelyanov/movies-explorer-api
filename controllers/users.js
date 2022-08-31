@@ -10,9 +10,12 @@ const BadRequestErr = require('../errors/BadRequestErr');
 const { NODE_ENV, JWT_SECRET } = process.env;
 
 const {
-  ok,
-  created,
-} = require('../constants/statuses');
+  STATUS_OK,
+  STATUS_CREATED,
+  USER_NOT_FOUND,
+  INCORRECT_DATA,
+  EXIST_EMAIL,
+} = require('../constants/constants');
 
 module.exports.getUserMe = (req, res, next) => {
   User.findById(req.user._id)
@@ -24,13 +27,13 @@ module.exports.updateUser = (req, res, next) => {
   const { name, email } = req.body;
 
   User.findByIdAndUpdate(req.user._id, { name, email }, { new: true, runValidators: true })
-    .orFail(new NotFoundError('Пользователь не найден'))
+    .orFail(new NotFoundError(USER_NOT_FOUND))
     .then((user) => {
-      res.status(ok).send(user);
+      res.status(STATUS_OK).send(user);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new BadRequestErr('Переданы некорректные данные'));
+        next(new BadRequestErr(INCORRECT_DATA));
         return;
       }
       next(err);
@@ -43,14 +46,14 @@ module.exports.createUser = (req, res, next) => {
     .then((hash) => User.create({
       name, email, password: hash,
     }))
-    .then((user) => res.status(created).send({
+    .then((user) => res.status(STATUS_CREATED).send({
       name: user.name,
       _id: user._id,
       email: user.email,
     }))
     .catch((err) => {
       if (err.code === 11000) {
-        next(new ConflictErr('Пользователь с таким Email уже существует'));
+        next(new ConflictErr(EXIST_EMAIL));
         return;
       }
       next(err);
