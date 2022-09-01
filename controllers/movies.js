@@ -12,7 +12,8 @@ const {
 } = require('../constants/constants');
 
 module.exports.getMovies = (req, res, next) => {
-  Movie.find({})
+  const owner = req.user._id;
+  Movie.find({ owner })
     .then((movies) => res.send(movies))
     .catch(next);
 };
@@ -24,7 +25,8 @@ module.exports.createMovie = (req, res, next) => {
     duration,
     year,
     description,
-    image, trailerLink,
+    image,
+    trailerLink,
     thumbnail,
     movieId,
     nameRU,
@@ -56,14 +58,14 @@ module.exports.createMovie = (req, res, next) => {
 };
 
 module.exports.deleteMovie = (req, res, next) => {
-  Movie.findById(req.params.id)
+  Movie.findById(req.params.cardId)
     .orFail(new NotFoundError(CARD_NOT_FOUND))
     .then((movie) => {
       if (`${movie.owner}` !== req.user._id) {
         next(new ForbiddenErr(PROHIBITION_DEL_CARD));
         return;
       }
-      Movie.findByIdAndRemove(req.params.id)
+      Movie.findByIdAndRemove(req.params.cardId)
         .then(() => {
           res.status(STATUS_OK).send({ message: 'Карточка удалена' });
         });

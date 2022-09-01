@@ -1,4 +1,5 @@
 const { celebrate, Joi } = require('celebrate');
+const regExp = require('./regexp');
 
 const validationLogin = celebrate({
   body: Joi.object().keys({
@@ -17,18 +18,18 @@ const validationCreateUser = celebrate({
 
 const validationCreateMovie = celebrate({
   body: Joi.object().keys({
-    country: Joi.string().min(2).max(30).required(),
-    director: Joi.string().min(2).max(30).required(),
-    duration: Joi.string().min(2).max(30).required(),
-    year: Joi.number().integer(),
-    description: Joi.string().min(2).max(30).required(),
-    image: Joi.string().uri({ scheme: ['http', 'https'] }).required(),
-    trailerLink: Joi.string().uri({ scheme: ['http', 'https'] }).required(),
-    thumbnail: Joi.string().uri({ scheme: ['http', 'https'] }).required(),
-    movieId: Joi.number().integer(),
-    nameRU: Joi.string().pattern(/([а-яА-ЯёЁ0-9_.-]){3,30}/).required(),
-    nameEN: Joi.string().pattern(/([A-Za-z0-9_.-]){3,30}/).required(),
-  }).unknown(true),
+    country: Joi.string().required(),
+    director: Joi.string().required(),
+    duration: Joi.number().required(),
+    year: Joi.string().required(),
+    description: Joi.string().required(),
+    image: Joi.string().required().pattern(regExp),
+    trailerLink: Joi.string().required().pattern(regExp),
+    thumbnail: Joi.string().required().pattern(regExp),
+    movieId: Joi.string().required(),
+    nameRU: Joi.string().required(),
+    nameEN: Joi.string().required(),
+  }),
 });
 
 const validationUpdateUser = celebrate({
@@ -38,9 +39,16 @@ const validationUpdateUser = celebrate({
   }),
 });
 
+const validationDeleteMovie = celebrate({
+  params: Joi.object().keys({
+    cardId: Joi.string().length(24).hex().required(),
+  }),
+});
+
 module.exports = {
   validationLogin,
   validationCreateUser,
   validationCreateMovie,
   validationUpdateUser,
+  validationDeleteMovie,
 };

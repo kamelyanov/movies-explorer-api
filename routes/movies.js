@@ -8,10 +8,11 @@ const {
 
 const {
   validationCreateMovie,
+  validationDeleteMovie,
 } = require('../utils/validations');
 
 router.get('/', getMovies);
 router.post('/', validationCreateMovie, createMovie);
-router.delete('/:id', deleteMovie);
+router.delete('/:cardId', validationDeleteMovie, deleteMovie);
 
 module.exports = router;

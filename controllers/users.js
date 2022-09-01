@@ -36,6 +36,10 @@ module.exports.updateUser = (req, res, next) => {
         next(new BadRequestErr(INCORRECT_DATA));
         return;
       }
+      if (err.code === 11000) {
+        next(new ConflictErr(EXIST_EMAIL));
+        return;
+      }
       next(err);
     });
 };
@@ -52,6 +56,10 @@ module.exports.createUser = (req, res, next) => {
       email: user.email,
     }))
     .catch((err) => {
+      if (err.name === 'ValidationError') {
+        next(new BadRequestErr(INCORRECT_DATA));
+        return;
+      }
       if (err.code === 11000) {
         next(new ConflictErr(EXIST_EMAIL));
         return;

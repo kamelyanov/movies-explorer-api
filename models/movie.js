@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const { isURL } = require('validator');
+const NOT_URL = require('../constants/constants');
 
 const movieSchema = new mongoose.Schema({
   country: {
@@ -25,27 +27,24 @@ const movieSchema = new mongoose.Schema({
     type: String,
     required: true,
     validate: {
-      validator(link) {
-        return /https?:\/\/(www.)?[\w._~:/?#[\]@!$&'()*+,;=]*#?/.test(link);
-      },
+      validator: (link) => isURL(link),
+      message: NOT_URL,
     },
   },
   trailerLink: {
     type: String,
     required: true,
     validate: {
-      validator(link) {
-        return /https?:\/\/(www.)?[\w._~:/?#[\]@!$&'()*+,;=]*#?/.test(link);
-      },
+      validator: (link) => isURL(link),
+      message: NOT_URL,
     },
   },
   thumbnail: {
     type: String,
     required: true,
     validate: {
-      validator(link) {
-        return /https?:\/\/(www.)?[\w._~:/?#[\]@!$&'()*+,;=]*#?/.test(link);
-      },
+      validator: (link) => isURL(link),
+      message: NOT_URL,
     },
   },
   owner: {
@@ -54,26 +53,16 @@ const movieSchema = new mongoose.Schema({
     ref: 'user',
   },
   movieId: {
-    type: Number,
+    type: String,
     required: true,
   },
   nameRU: {
     type: String,
     required: true,
-    validate: {
-      validator(text) {
-        return /([а-яА-ЯёЁ0-9_.-]){3,30}/.test(text);
-      },
-    },
   },
   nameEN: {
     type: String,
     required: true,
-    validate: {
-      validator(text) {
-        return /([A-Za-z0-9_.-]){3,30}/.test(text);
-      },
-    },
   },
 });
 

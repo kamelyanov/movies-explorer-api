@@ -15,6 +15,7 @@ const EXIST_EMAIL = 'Пользователь с таким Email уже сущ�
 const REQUIRED_AUTH = 'Необходима авторизация';
 const PAGE_NOT_FOUND = 'Страница не найдена';
 const DEFAULT_ERROR = 'Произошла ошибка';
+const NOT_URL = 'Некорректный URL';
 
 module.exports = {
   STATUS_OK,
@@ -33,4 +34,5 @@ module.exports = {
   REQUIRED_AUTH,
   PAGE_NOT_FOUND,
   DEFAULT_ERROR,
+  NOT_URL,
 };
